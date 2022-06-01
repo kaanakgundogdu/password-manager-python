@@ -1,8 +1,9 @@
+import json
 import tkinter
 from tkinter import messagebox
 import passwordgenerator
 import pyperclip
-
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -13,7 +14,6 @@ def generate_password():
     password_entry.insert(0, password)
     pyperclip.copy(password)
 
-
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -23,30 +23,55 @@ def save_password():
     mail = email_entry.get()
     password = password_entry.get()
 
+    new_data = {website: {"email": mail, "password": password}}
+
     if len(website) == 0 or len(password) == 0:
         messagebox.showinfo(
             title="Oops", message="Please don't leave any fields empty!")
         return
 
-    is_ok = messagebox.askokcancel(
-        title=website,
-        message=f"These are the details entered: \nEmail: {mail}\nPassword: {password}\nIs it okay to save?",
-    )
-    if is_ok:
-        with open("passwords.txt", "a") as file:
-            file.write(f"{website}| {mail} | {password}\n")
-            websie_entry.delete(0, tkinter.END)
-            password_entry.delete(0, tkinter.END)
+    try:
+        with open("app\passwords.json", "r") as data_file:
+            data = json.load(data_file)
+    except:
+        with open("app\passwords.json", "w") as data_file:
+            json.dump(new_data, data_file, indent=4)
+    else:
+        data.update(new_data)
+        with open("app\passwords.json", "w") as data_file:
+            json.dump(data, data_file, indent=4)
+    finally:
+        websie_entry.delete(0, tkinter.END)
+        password_entry.delete(0, tkinter.END)
 
+# ---------------------------- SEARCH ------------------------------- #
+
+
+def search():
+    website = websie_entry.get()
+
+    try:
+        with open("app\passwords.json", "r") as data_file:
+            data = json.load(data_file)
+            search_data = data[website]
+            email_ = search_data["email"]
+            password_ = search_data["password"]
+            messagebox.showinfo(
+                title="Search Results", message=f"E-mail: {email_}\nPassword: {password_}")
+        return
+    except:
+        messagebox.showinfo(
+            title="Oops", message=f"There is no site such as {website}")
 
 # ---------------------------- UI SETUP ------------------------------- #
+
 
 window = tkinter.Tk()
 window.title("Passwor Manager")
 window.config(padx=50, pady=50)
 
 canvas = tkinter.Canvas(width=200, height=200, highlightthickness=0)
-lock_img = tkinter.PhotoImage(file="images/logo.png")
+lock_img = tkinter.PhotoImage(file="app\images\logo.png")
 canvas.create_image(100, 100, image=lock_img)
 canvas.grid(row=0, column=1)
 
@@ -66,6 +91,12 @@ email_entry.insert(0, "kaanakgundogdu@gmail.com")
 email_entry.grid(row=2, column=1, columnspan=2, sticky="EW")
 password_entry = tkinter.Entry(width=21)
 password_entry.grid(row=3, column=1, sticky="EW")
+
+
+search_button = tkinter.Button(
+    text="Search", command=search)
+search_button.grid(row=1, column=2, sticky="EW")
+
 
 genereate_password_button = tkinter.Button(
     text="Generate Password", command=generate_password)
