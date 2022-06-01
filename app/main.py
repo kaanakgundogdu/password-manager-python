@@ -53,16 +53,19 @@ def search():
     try:
         with open("app\passwords.json", "r") as data_file:
             data = json.load(data_file)
+    except:
+        messagebox.showinfo(
+            title="ERROR", message=f"There is no data file")
+    else:
+        if website in data:
             search_data = data[website]
             email_ = search_data["email"]
             password_ = search_data["password"]
             messagebox.showinfo(
-                title="Search Results", message=f"E-mail: {email_}\nPassword: {password_}")
-        return
-    except:
-        messagebox.showinfo(
-            title="Oops", message=f"There is no site such as {website}")
-
+                title=f"{website} Email and Password", message=f"E-mail: {email_}\nPassword: {password_}")
+        else:
+            messagebox.showinfo(
+                title="Oops", message=f"Couldn't find {website}'s info.")
 # ---------------------------- UI SETUP ------------------------------- #
 
 
