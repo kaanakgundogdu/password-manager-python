@@ -1,18 +1,17 @@
 # Password Manager App
-## A password manager app made with python and tkinter.
-
+## A password manager app made with python and tkinter. You can save your passwords in json file, search through passwords with site name and generate strong passwords.
 ### Screenshots:
 
 ![](https://github.com/kaanakgundogdu/password-manager-python/blob/main/app/images/1.png)
-
-### Saving details:
-
-![](https://github.com/kaanakgundogdu/password-manager-python/blob/main/app/images/2.png)
 
 ### Empty fields popup:
 
 ![](https://github.com/kaanakgundogdu/password-manager-python/blob/main/app/images/3.png)
 
-### Saved passwords location:
+### Searching saved site infos:
 
-![](https://github.com/kaanakgundogdu/password-manager-python/blob/main/app/images/4.png)
+![](https://github.com/kaanakgundogdu/password-manager-python/blob/main/app/images/6.png)
+
+### Searching non saved site:
+
+![](https://github.com/kaanakgundogdu/password-manager-python/blob/main/app/images/5.png)
